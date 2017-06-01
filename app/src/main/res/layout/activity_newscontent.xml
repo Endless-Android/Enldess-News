@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <include layout="@layout/toolbar"/>
+
+    <com.tencent.smtt.sdk.WebView
+
+        android:id="@+id/tx_webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </com.tencent.smtt.sdk.WebView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_comment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="评论。。。。"
+            />
+
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/comment_btn"
+            android:text="评论"
+            />
+    </RelativeLayout>
+</LinearLayout>

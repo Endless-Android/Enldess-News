@@ -1,0 +1,13 @@
+<resources>
+    <string-array name="school_year_labels">
+        <item>2013-2014</item>
+        <item>2014-2015</item>
+        <item>2015-2016</item>
+        <item>2016-2017</item>
+    </string-array>
+
+    <string-array name="term_labels">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

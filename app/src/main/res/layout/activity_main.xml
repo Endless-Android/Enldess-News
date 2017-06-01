@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_time"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/sp_school_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/school_year_labels"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_year"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+
+        <Spinner
+            android:id="@+id/sp_term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/term_labels"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/term"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_searchSchedule"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_background"
+            android:drawableTop="@mipmap/schedule_icon"
+            android:padding="10dp"
+            android:text="@string/search_schedule"
+            android:textAllCaps="false"
+            android:textSize="26sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top|center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_searchScore"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:drawableTop="@mipmap/score_icon"
+            android:padding="10dp"
+            android:text="@string/search_score"
+            android:textAllCaps="false"
+            android:textSize="26sp"/>
+    </LinearLayout>
+
+    <include layout="@layout/activity_bottom_title"/>
+
+</LinearLayout>

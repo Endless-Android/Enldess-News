@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <include layout="@layout/base_toolbar"/>
+    <fragment
+        android:id="@+id/fragement_read"
+        android:name="com.endless.enldess_news.ui.fragment.ReadFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/fragement_video"
+        android:name="com.endless.enldess_news.ui.fragment.VideoFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/fragement_lamp"
+        android:name="com.endless.enldess_news.ui.activity.WeatherActivity"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/fragement_pc"
+        android:name="com.endless.enldess_news.ui.fragment.PcFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+
+    <include layout="@layout/activity_bottom_title"/>
+
+</LinearLayout>

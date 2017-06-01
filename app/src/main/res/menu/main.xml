@@ -1,0 +1,50 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+
+    <item
+        android:id="@+id/font"
+        android:icon="@mipmap/fonts"
+        android:orderInCategory="20"
+        android:showAsAction="always"
+        />
+
+
+    <item
+        android:id="@+id/share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="共享"/>
+
+
+
+    <item
+        android:id="@+id/coll"
+        android:icon="@mipmap/fav_nor"
+        android:orderInCategory="15"
+        android:title="收藏"
+        android:showAsAction="always"
+        />
+
+   <!-- <item
+        android:id="@+id/action_collect"
+        android:orderInCategory="80"
+        android:title="收藏"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="never"/>-->
+    <!--<item
+        android:id="@+id/action_share"
+        android:orderInCategory="90"
+        android:title="分享"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+   <!-     app:showAsAction="never"/>&ndash;&gt;
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="70"
+        android:title="设置"
+        app:showAsAction="never"/>-->
+
+</menu>
