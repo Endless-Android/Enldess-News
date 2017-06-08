@@ -1,63 +1,105 @@
 package com.endless.enldess_news.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.endless.enldess_news.R;
 import com.endless.enldess_news.bean.UserBean;
+import com.endless.enldess_news.ui.activity.AboutActivity;
 import com.endless.enldess_news.ui.activity.CollectActivity;
 import com.endless.enldess_news.ui.activity.LoginBmobActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bmob.v3.BmobUser;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PcFragment extends BaseFragment {
 
-    @BindView(R.id.imageView2)
-    ImageView mImageView2;
-    @BindView(R.id.profile_image)
-    CircleImageView mProfileImage;
-    @BindView(R.id.pc_login)
-    TextView mPcLogin;
+
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.iv_user_icon)
+    ImageView mIvUserIcon;
+    @BindView(R.id.tv_focus_num)
+    TextView mTvFocusNum;
+    @BindView(R.id.ll_focus)
+    LinearLayout mLlFocus;
+    @BindView(R.id.tv_fans_num)
+    TextView mTvFansNum;
+    @BindView(R.id.ll_fans)
+    LinearLayout mLlFans;
+    @BindView(R.id.tv_username)
+    TextView mTvUsername;
     @BindView(R.id.mycollect)
     LinearLayout mMycollect;
-    @BindView(R.id.pc_out)
-    TextView mPcOut;
-    Unbinder unbinder;
-    @BindView(R.id.night_theme)
-    TextView mNightTheme;
-    Unbinder unbinder1;
-
+    @BindView(R.id.ll_my_histories)
+    LinearLayout mLlMyHistories;
+    @BindView(R.id.ll_help_center)
+    LinearLayout mLlHelpCenter;
+    @BindView(R.id.ll_user_backup)
+    LinearLayout mLlUserBackup;
+    @BindView(R.id.ll_about)
+    LinearLayout mLlAbout;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.btn_logout)
+    Button mBtnLogout;
 
     @Override
     protected void init() {
 
 
         UserBean bean = BmobUser.getCurrentUser(UserBean.class);
+
         if (bean != null) {
             String username = bean.getUsername();
-            mPcLogin.setText("欢迎你：" + username);
-            mPcOut.setVisibility(View.VISIBLE);
-            mProfileImage.setImageResource(R.mipmap.eddies);
+            mTvUsername.setText(username);
+            mBtnLogout.setVisibility(View.VISIBLE);
+            mBtnLogin.setVisibility(View.GONE);
+            mIvUserIcon.setVisibility(View.VISIBLE);
+            mLlFocus.setVisibility(View.VISIBLE);
+            mLlFans.setVisibility(View.VISIBLE);
+            mTvUsername.setVisibility(View.VISIBLE);
+            mTvTitle.setVisibility(View.GONE);
+        }else{
 
+            mIvUserIcon.setVisibility(View.GONE);
+            mLlFocus.setVisibility(View.GONE);
+            mLlFans.setVisibility(View.GONE);
+            mTvUsername.setVisibility(View.GONE);
+            mTvTitle.setVisibility(View.VISIBLE);
         }
 
 
-        mPcLogin.setOnClickListener(new View.OnClickListener() {
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), LoginBmobActivity.class));
+            }
+        });
 
+        mBtnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BmobUser.logOut();
+                mBtnLogout.setVisibility(View.GONE);
+                mBtnLogin.setVisibility(View.VISIBLE);
+                mIvUserIcon.setVisibility(View.GONE);
+                mLlFocus.setVisibility(View.GONE);
+                mLlFans.setVisibility(View.GONE);
+                mTvUsername.setVisibility(View.GONE);
+                mTvTitle.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        mLlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AboutActivity.class));
             }
         });
 
@@ -68,43 +110,15 @@ public class PcFragment extends BaseFragment {
             }
         });
 
-        mNightTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
     }
 
 
     @Override
     public int getLayoutID() {
-        return R.layout.pc_fragment_main_layout;
+        return R.layout.pc_fragment_main_layouts;
     }
 
 
-    @OnClick(R.id.pc_out)
-    public void onViewClicked() {
-        BmobUser.logOut();
-        mPcOut.setVisibility(View.GONE);
-        mPcLogin.setText("点击登录");
 
-
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder1 = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder1.unbind();
-    }
 }
