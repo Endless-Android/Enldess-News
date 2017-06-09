@@ -119,7 +119,10 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         decidePicExist();
         decideWeatherExist();
         mSwipe_refresh.setOnRefreshListener(mOnRefreshListener);
+
     }
+
+
 
 
     private void init() {
@@ -136,18 +139,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-  /*  private void setUi() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorview = getWindow().getDecorView();
-            decorview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
 
-    }*/
 
     public void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=671286e873d343169d6844775cbaf95a";
         mWeatherId = weatherId;
+        Log.e("aaaaaa", "requestWeather: "+weatherUrl );
         HttpUtil.senOkHttpRequest(weatherUrl, mCallback);
         loadpic();
     }
@@ -187,7 +184,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         mTitle_update_time.setText(updateTime);
         mDegree_text.setText(degree);
         mWeather_info_text.setText(weatherInfo);
-        mForecast_layout.removeAllViews();
         Log.e("aaaaaaaaaaaaaaaaa", "showWeatherInfo: "+weathers.getHourly_forecast() );
        // weathers.getDaily_forecast().size();
        /* for (Weathers.DailyForecastBean forecastBean : weathers.daily_forecast) {
@@ -224,7 +220,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         mTitle_update_time = (TextView) findViewById(R.id.title_update_time);
         mDegree_text = (TextView) findViewById(R.id.degree_text);
         mWeather_info_text = (TextView) findViewById(R.id.weather_info_text);
-        mForecast_layout = (LinearLayout) findViewById(R.id.forecast_layout);
         mApi_text = (TextView) findViewById(R.id.api_text);
         mPm2_5_text = (TextView) findViewById(R.id.pm2_5_text);
         mComfort_text = (TextView) findViewById(R.id.comfort_text);

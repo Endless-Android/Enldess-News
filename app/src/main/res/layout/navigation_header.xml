@@ -2,16 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="180dp"
-              android:background="@color/colorPrimary"
+              android:background="@mipmap/layout_bg"
               android:orientation="vertical"
               android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="18dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/QR_code"
+        android:src="@mipmap/zxing"
+       android:layout_alignParentRight="true"
+        />
+
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/icon_image"
-        android:src="@mipmap/eddie"
+        android:src="@drawable/jy"
         android:layout_centerInParent="true"
         />
 

@@ -40,13 +40,12 @@ public class ReciverTulinView extends RelativeLayout {
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.receivemsg, this);
         ButterKnife.bind(this,this);
-
     }
 
     public void bindView(ChatMessage chatMessage) {
         Log.e("bindViewbew", "bindView: " + chatMessage.getMsg() + "--" + chatMessage.getType());
         mReceiveMessage.setText(chatMessage.getMsg());
-        SimpleDateFormat time = new SimpleDateFormat("yyyy MM dd HH mm ss");
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mTimestamp.setText(time.format(chatMessage.getDate()));
     }
 }

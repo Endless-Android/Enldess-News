@@ -64,7 +64,7 @@
         <activity android:name=".ui.activity.ScoreActivity"/>
         <activity android:name=".ui.activity.ScheduleActivity"></activity>
         <activity android:name=".ui.activity.AboutActivity"/>
-
+        <activity android:name=".ui.activity.QRcodeActivity"/>
     </application>
 
 

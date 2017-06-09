@@ -45,7 +45,7 @@ public class SendTulinView extends RelativeLayout {
 
     public void bindView(ChatMessage chatMessage) {
         mSendMessage.setText(chatMessage.getMsg());
-        SimpleDateFormat time = new SimpleDateFormat("yyyy MM dd HH mm ss");
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mTimestamp.setText(time.format(chatMessage.getDate()));
 
 
