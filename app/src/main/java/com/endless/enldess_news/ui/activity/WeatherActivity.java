@@ -188,6 +188,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         mDegree_text.setText(degree);
         mWeather_info_text.setText(weatherInfo);
         mForecast_layout.removeAllViews();
+        Log.e("aaaaaaaaaaaaaaaaa", "showWeatherInfo: "+weathers.getHourly_forecast() );
+       // weathers.getDaily_forecast().size();
        /* for (Weathers.DailyForecastBean forecastBean : weathers.daily_forecast) {
             View view = LayoutInflater.from(this).from(this).inflate(R.layout.forecast_item, mForecast_layout, false);
             TextView dataText = (TextView) view.findViewById(R.id.data_text);

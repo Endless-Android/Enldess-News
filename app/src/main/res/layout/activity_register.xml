@@ -3,8 +3,11 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/login_bgc"
     >
+
+
+    <include layout="@layout/video_background"/>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -47,7 +50,7 @@
                         android:layout_height="65dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="80dp"
-                        android:src="@mipmap/default_face"/>
+                        android:src="@drawable/jy"/>
                 </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -109,13 +112,13 @@
 
                 <Button
                     android:id="@+id/login"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
                     android:text="注册"
                     android:textColor="@android:color/black"
-                    android:textSize="15dp"/>
+                    android:textSize="18dp"/>
 
 
             </LinearLayout>

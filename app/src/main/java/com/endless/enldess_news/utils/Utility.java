@@ -95,7 +95,8 @@ public class Utility {
             Log.i("AAAAAAAAAAAAAA", "handleWeatherResponse: 解析的内容" + weatherContent);
             Gson gson = new Gson();
             Weathers weathers = gson.fromJson(weatherContent, Weathers.class);
-            //   Log.i("bbbbbbbbbbbbbbbbb", "handleWeatherResponse: "+weathers.getStatus().toString());
+               //Log.i("bbbbbbbbbbbbbbbbb", "handleWeatherResponse: "+weathers.getHourly_forecast().get(0).getDate());
+
             return weathers;
         } catch (JSONException e) {
             e.printStackTrace();

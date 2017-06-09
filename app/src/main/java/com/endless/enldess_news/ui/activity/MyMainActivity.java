@@ -89,11 +89,6 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            theme = savedInstanceState.getInt("theme");
-            setTheme(theme);
-        }
-        setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_mymain);
         ButterKnife.bind(this);
         mToolbar.setTitle("");
@@ -110,14 +105,8 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
         }
         initlisten();
         init();
-
-
     }
 
-    public void setTheme() {
-        theme = (theme == R.style.AppTheme) ? R.style.NightAppTheme : R.style.AppTheme;
-        MyMainActivity.this.recreate();
-    }
 
     private void initFragmentType() {
         mBottomReadLayout.setSelected(false);
@@ -199,7 +188,7 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
 
     private void init() {
         mGson = new Gson();
-        setSupportActionBar(mToolbar);
+        //setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbar, 0, 0);
         mDrawerlayout.setDrawerListener(toggle);
         toggle.syncState();

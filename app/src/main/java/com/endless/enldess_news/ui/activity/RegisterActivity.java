@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.endless.enldess_news.R;
+import com.endless.enldess_news.View.MyVideoView;
 import com.endless.enldess_news.bean.UserBean;
 
 import java.io.File;
@@ -36,8 +38,6 @@ import butterknife.OnClick;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
-import static com.endless.enldess_news.R.id.username;
-
 /**
  * Created by Administrator on 2017/5/23.
  */
@@ -45,8 +45,6 @@ import static com.endless.enldess_news.R.id.username;
 public class RegisterActivity extends AppCompatActivity {
     private static final int CAMERA_SUCCESS = 1001;
     private static final int PHOTO_SUCCESS = 1002;
-    @BindView(username)
-    EditText mUsername;
     @BindView(R.id.til_username)
     TextInputLayout mTilUsername;
     @BindView(R.id.phoneNum)
@@ -69,17 +67,45 @@ public class RegisterActivity extends AppCompatActivity {
     RelativeLayout mActivityLogin;
     @BindView(R.id.head_portrait)
     ImageView mHeadPortrait;
+    @BindView(R.id.videoView)
+    MyVideoView mVideoView;
+    @BindView(R.id.username)
+    EditText mUsername;
     private Bitmap mBitmap;
     private FileOutputStream mOut;
     private File mDirFile;
+    private String mVideoPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        mVideoPath = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.background_gif).toString();
+        initVideo();
 
+    }
 
+    private void initVideo() {
+
+        mVideoView.setVideoPath(mVideoPath);
+        mVideoView.start();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+                mp.setLooping(true);    ////设置是否对播放的东东进行循环播放。
+
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.setVideoPath(mVideoPath);
+                mVideoView.start();
+            }
+        });
     }
 
 

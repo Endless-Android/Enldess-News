@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.endless.enldess_news.R;
+import com.endless.enldess_news.View.CustomTransformer;
 import com.endless.enldess_news.adapter.MyRecycleViewAdapter;
 import com.endless.enldess_news.adapter.ViewPagerAdatper;
 import com.endless.enldess_news.gson.NewsBean;
@@ -57,7 +58,6 @@ public class ViewPagerFragment extends Fragment {
     private String adresss;
     private MyBitmapUtils mMyBitmapUtils;
     private List<View> mBitmaps = new ArrayList<View>();
-    boolean isRunning = false;
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -67,11 +67,9 @@ public class ViewPagerFragment extends Fragment {
 
         }
     };
-
-
     private ViewPagerAdatper mAdapter1;
-    private ImageView mImageViews;
-    private ImageView mImageView;
+    private ImageView mImageViews_02;
+    private ImageView mImageView_01, mImageViews_03;
     private String mThumbnail_pic_s02;
     private String mThumbnail_pic_s03;
     private ViewPager mHeader;
@@ -79,13 +77,15 @@ public class ViewPagerFragment extends Fragment {
     private View mV;
     private ImageView mOneDots;
     private ImageView mTwoDots;
+    private ImageView mThreeDots;
+    private String mThumbnail_pic_s01;
 
     public static ViewPagerFragment newInstance(int title, int color, NewsBean bean) {
         ViewPagerFragment fragment = new ViewPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("title", title);
         bundle.putInt("color", color);
-        bundle.putSerializable("bean", bean);
+
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -118,7 +118,9 @@ public class ViewPagerFragment extends Fragment {
         mV = LayoutInflater.from(getContext()).inflate(R.layout.header_viewpager, null, false);
         mOneDots = (ImageView) mV.findViewById(R.id.one_dots);
         mTwoDots = (ImageView) mV.findViewById(R.id.two_dots);
+        mThreeDots = (ImageView) mV.findViewById(R.id.three_dots);
         mHeader = (ViewPager) mV.findViewById(R.id.head_image);
+        mHeader.setPageTransformer(true, new CustomTransformer());
         mMyBitmapUtils = new MyBitmapUtils();
         //initImag();
         mMtRecycleView.addHeaderView(mV);
@@ -140,8 +142,6 @@ public class ViewPagerFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,11 +156,13 @@ public class ViewPagerFragment extends Fragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        mImageView = new ImageView(getContext());
-        mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        mImageViews = new ImageView(getContext());
-        mImageViews = new ImageView(getContext());
-        mImageViews.setScaleType(ImageView.ScaleType.FIT_XY);
+        mImageView_01 = new ImageView(getContext());
+        mImageView_01.setScaleType(ImageView.ScaleType.FIT_XY);
+        mImageViews_02 = new ImageView(getContext());
+        mImageViews_02 = new ImageView(getContext());
+        mImageViews_02.setScaleType(ImageView.ScaleType.FIT_XY);
+        mImageViews_03 = new ImageView(getContext());
+        mImageViews_03.setScaleType(ImageView.ScaleType.FIT_XY);
         initDate();
         initView();
         addDots();
@@ -188,6 +190,13 @@ public class ViewPagerFragment extends Fragment {
             }
         });
 
+        mThreeDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHeader.setCurrentItem(2);
+            }
+        });
+
     }
 
     private void moveDots() {
@@ -201,9 +210,15 @@ public class ViewPagerFragment extends Fragment {
                 if (position == 0) {
                     mOneDots.setImageResource(R.drawable.light_dot);
                     mTwoDots.setImageResource(R.drawable.gray_dot);
+                    mThreeDots.setImageResource(R.drawable.gray_dot);
                 } else if (position == 1) {
                     mOneDots.setImageResource(R.drawable.gray_dot);
                     mTwoDots.setImageResource(R.drawable.light_dot);
+                    mThreeDots.setImageResource(R.drawable.gray_dot);
+                } else if (position == 2) {
+                    mOneDots.setImageResource(R.drawable.gray_dot);
+                    mTwoDots.setImageResource(R.drawable.gray_dot);
+                    mThreeDots.setImageResource(R.drawable.light_dot);
                 }
             }
 
@@ -235,13 +250,17 @@ public class ViewPagerFragment extends Fragment {
 
     private void initImag() {
         mAdapter1 = new ViewPagerAdatper(mBitmaps, true);
-        mMyBitmapUtils.display(mImageView, mThumbnail_pic_s02);
-        mMyBitmapUtils.display(mImageViews, mThumbnail_pic_s03);
-        mBitmaps.add(mImageView);
-        mBitmaps.add(mImageViews);
+        mMyBitmapUtils.display(mImageView_01, mThumbnail_pic_s02);
+        mMyBitmapUtils.display(mImageViews_02, mThumbnail_pic_s03);
+        mMyBitmapUtils.display(mImageViews_03, mThumbnail_pic_s01);
+        mBitmaps.add(mImageView_01);
+        mBitmaps.add(mImageViews_02);
+        mBitmaps.add(mImageViews_03);
         mOneDots.setVisibility(View.VISIBLE);
         mTwoDots.setVisibility(View.VISIBLE);
+        mThreeDots.setVisibility(View.VISIBLE);
         mHeader.setAdapter(mAdapter1);
+        mHeader.setCurrentItem(1);
     }
 
     private void initDate() {
@@ -293,6 +312,7 @@ public class ViewPagerFragment extends Fragment {
                             List<NewsBean.ResultBean.DataBean> Data = bean.getResult().getData();
                             mThumbnail_pic_s02 = Data.get(0).getThumbnail_pic_s02();
                             mThumbnail_pic_s03 = Data.get(0).getThumbnail_pic_s03();
+                            mThumbnail_pic_s01 = Data.get(0).getThumbnail_pic_s();
                             mData.addAll(Data);
                             m.post(mRunnable);
                         } catch (JSONException e) {
@@ -302,7 +322,6 @@ public class ViewPagerFragment extends Fragment {
                 });
             }
         }).start();
-
     }
 
 

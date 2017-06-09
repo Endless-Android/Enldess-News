@@ -64,7 +64,7 @@ public class PcFragment extends BaseFragment {
             mLlFans.setVisibility(View.VISIBLE);
             mTvUsername.setVisibility(View.VISIBLE);
             mTvTitle.setVisibility(View.GONE);
-        }else{
+        } else {
 
             mIvUserIcon.setVisibility(View.GONE);
             mLlFocus.setVisibility(View.GONE);
@@ -111,6 +111,7 @@ public class PcFragment extends BaseFragment {
         });
 
 
+
     }
 
 
@@ -118,7 +119,6 @@ public class PcFragment extends BaseFragment {
     public int getLayoutID() {
         return R.layout.pc_fragment_main_layouts;
     }
-
 
 
 }

@@ -9,14 +9,6 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="NightAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/nightColorPrimary</item>
-        <item name="colorPrimaryDark">@color/nightColorPrimaryDark</item>
-        <item name="colorAccent">@color/nightColorAccent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="mainBackground">@color/nightColorPrimaryDark</item>
-    </style>
 
 
     <style name="GalaxyZooThemeToolbarDarkOverflow" parent="Theme.AppCompat.NoActionBar">

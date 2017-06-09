@@ -1,13 +1,12 @@
 package com.endless.enldess_news.gson;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/16.
  */
 
-public class NewsBean implements Serializable{
+public class NewsBean{
 
 
     /**
@@ -69,7 +68,7 @@ public class NewsBean implements Serializable{
     };*/
 
 
-    public static class ResultBean implements Serializable {
+    public static class ResultBean {
         private String stat;
         /**
          * uniquekey : 0838d5e4442f75f687e2644129278711

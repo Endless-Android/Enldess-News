@@ -1,6 +1,8 @@
 package com.endless.enldess_news.ui.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.endless.enldess_news.R;
 import com.endless.enldess_news.bean.UserBean;
@@ -47,12 +50,39 @@ public class LoginBmobActivity extends AppCompatActivity {
     TextView mRegister;
     @BindView(R.id.activity_login)
     RelativeLayout mActivityLogin;
+    @BindView(R.id.videoView)
+    VideoView mVideoView;
+    private String mVideoPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_bmob);
         ButterKnife.bind(this);
+        mVideoPath = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.kr36).toString();
+        initVideo();
+
+    }
+
+    private void initVideo() {
+        mVideoView.setVideoPath(mVideoPath);
+        mVideoView.start();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+                mp.setLooping(true);    ////设置是否对播放的东东进行循环播放。
+
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.setVideoPath(mVideoPath);
+                mVideoView.start();
+            }
+        });
 
 
     }
@@ -75,6 +105,7 @@ public class LoginBmobActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(LoginBmobActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+
 
                         }
                     }

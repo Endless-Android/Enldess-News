@@ -3,9 +3,7 @@ package com.endless.enldess_news.adapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,13 +14,7 @@ public class ViewPagerAdatper extends PagerAdapter {
     private List<View> mViewList;
     private List<View> mBitmaps;
     private boolean isHead = false;
-    private List<ImageView> imagesDots = new ArrayList<ImageView>();//展示图片位置的小圆点
-    private int delayTime; //轮播图延迟换图的时间
-
-
-    public ViewPagerAdatper() {
-
-    }
+   // private final int realPosition = position % getRealCount();
 
     public ViewPagerAdatper(List<View> mViewList) {
         this.mViewList = mViewList;
@@ -70,4 +62,9 @@ public class ViewPagerAdatper extends PagerAdapter {
             container.removeView(mViewList.get(position));
         }
     }
+
+    private int getRealCount(){
+        return  mBitmaps==null ? 0:mBitmaps.size();
+    }
+
 }

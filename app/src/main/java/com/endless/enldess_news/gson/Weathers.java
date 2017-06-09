@@ -1,5 +1,7 @@
 package com.endless.enldess_news.gson;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -72,6 +74,7 @@ public class Weathers {
      * wind : {"deg":"134","dir":"无持续风向","sc":"微风","spd":"2"}
      */
 
+    @SerializedName("daily_forecast")
     public static List<DailyForecastBean> daily_forecast;
     /**
      * cond : {"code":"103","txt":"晴间多云"}
