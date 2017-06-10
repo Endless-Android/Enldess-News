@@ -3,6 +3,8 @@ package com.endless.enldess_news.ui.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +15,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,17 +28,28 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.endless.enldess_news.R;
+import com.endless.enldess_news.gson.DailyForecast;
+import com.endless.enldess_news.gson.NewWeather;
 import com.endless.enldess_news.gson.Weathers;
 import com.endless.enldess_news.ui.fragment.NewFragment;
 import com.endless.enldess_news.utils.HttpUtil;
 import com.endless.enldess_news.utils.Utility;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -94,7 +109,19 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView mPic_img;
     private String mWeatherString;
     private String mPic_img1;
+    private static boolean isExit = false;
+    private List<DailyForecast> list = new ArrayList<DailyForecast>();
+    Handler mHandler = new Handler() {
 
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
+
+
+    private NewWeather mNewWeather = new NewWeather();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,10 +146,33 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         decidePicExist();
         decideWeatherExist();
         mSwipe_refresh.setOnRefreshListener(mOnRefreshListener);
+        initdaily(mWeatherId);
 
     }
 
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
 
 
     private void init() {
@@ -139,14 +189,20 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
-
     public void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=671286e873d343169d6844775cbaf95a";
         mWeatherId = weatherId;
-        Log.e("aaaaaa", "requestWeather: "+weatherUrl );
+        initdaily(mWeatherId);
+        Log.e("aaaaaa", "requestWeather: " + weatherUrl);
         HttpUtil.senOkHttpRequest(weatherUrl, mCallback);
         loadpic();
+
+    }
+
+    private void load() {
+
+        Log.e("aaaaaaaaa", "load: " + list.size());
+
     }
 
     private void loadpic() {
@@ -184,22 +240,21 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         mTitle_update_time.setText(updateTime);
         mDegree_text.setText(degree);
         mWeather_info_text.setText(weatherInfo);
-        Log.e("aaaaaaaaaaaaaaaaa", "showWeatherInfo: "+weathers.getHourly_forecast() );
-       // weathers.getDaily_forecast().size();
-       /* for (Weathers.DailyForecastBean forecastBean : weathers.daily_forecast) {
+        mForecast_layout.removeAllViews();
+
+        for (DailyForecast forecast : list) {
             View view = LayoutInflater.from(this).from(this).inflate(R.layout.forecast_item, mForecast_layout, false);
             TextView dataText = (TextView) view.findViewById(R.id.data_text);
             TextView infoText = (TextView) view.findViewById(R.id.info_text);
             TextView maxText = (TextView) view.findViewById(R.id.max_text);
             TextView minText = (TextView) view.findViewById(R.id.min_text);
-            dataText.setText(forecastBean.getDate());
-            infoText.setText(forecastBean.getCond().getTxt_d());
-            maxText.setText(forecastBean.getTmp().getMax());
-            minText.setText(forecastBean.getTmp().getMin());
+            dataText.setText(forecast.date);
+            infoText.setText(forecast.more.info);
+            maxText.setText(forecast.temperture.max);
+            minText.setText(forecast.temperture.min);
             mForecast_layout.addView(view);
-            Log.i("ccccccccccc", "showWeatherInfo: "+forecastBean.getDate()+forecastBean.getCond().getTxt_d()+forecastBean.getTmp().getMax()+forecastBean.getTmp().getMin());
         }
-                */
+
 
         if (weathers.getAqi() != null) {
             mApi_text.setText(weathers.getAqi().getCity().getAqi());
@@ -215,6 +270,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initView() {
+        mForecast_layout = (LinearLayout) findViewById(R.id.forecast_layout);
         mWeather_layout = (ScrollView) findViewById(R.id.weather_layout);
         mTitle_city = (TextView) findViewById(R.id.title_city);
         mTitle_update_time = (TextView) findViewById(R.id.title_update_time);
@@ -260,10 +316,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onResponse(Call call, Response response) throws IOException {
             final String responseText = response.body().string();
-            Log.i("AAAAA", "run: " + responseText);
             final Weathers weather = Utility.handleWeatherResponse(responseText);
-            Log.i("AAAAA", "run: " + weather.getStatus());
-            // Log.i("ddddddddd", "showWeatherInfo: "+weather.getDaily_forecast().size());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -272,6 +325,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                         editor.putString("weather", responseText);
                         editor.apply();
                         showWeatherInfo(weather);
+                        load();
                     } else {
                         Log.i("AAAAA", "获取天气信息失败");
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_LONG).show();
@@ -284,18 +338,48 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void decideWeatherExist() {
-        if (mWeatherString != null) {
-            Weathers weathers = Utility.handleWeatherResponse(mWeatherString);
-            mWeatherId = weathers.getBasic().getId();
-            showWeatherInfo(weathers);
-        } else {
-            mWeatherId = getIntent().getStringExtra("weather_id");
-            if (mWeatherId == null) {
-                mWeatherId = "CN101280101";
-            }
-            mWeather_layout.setVisibility(View.INVISIBLE);
-            requestWeather(mWeatherId);
+
+
+        mWeatherId = getIntent().getStringExtra("weather_id");
+        if (mWeatherId == null) {
+            mWeatherId = "CN101280101";
         }
+        mWeather_layout.setVisibility(View.INVISIBLE);
+        requestWeather(mWeatherId);
+
+    }
+
+    private void initdaily(String weatherId) {
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=671286e873d343169d6844775cbaf95a";
+        mWeatherId = weatherId;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(weatherUrl).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("aaaaaa", "requestWeather: ssssssssssssss" + e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                try {
+                    final String responseText = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseText);
+                    JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+                    String s = jsonArray.getJSONObject(0).toString();
+                    Gson gson = new Gson();
+                    mNewWeather = gson.fromJson(s, NewWeather.class);
+                    list.clear();
+                    list.addAll(mNewWeather.forecastList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
     private void decidePicExist() {

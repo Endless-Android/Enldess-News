@@ -2,6 +2,8 @@ package com.endless.enldess_news.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -13,12 +15,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.endless.enldess_news.R;
 import com.endless.enldess_news.ui.fragment.NewFragment;
@@ -86,6 +90,16 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
     private FragmentTransaction mTransaction;
     private String mFragment_type;
     private int theme = R.style.AppTheme;
+    private static boolean isExit = false;
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,6 +131,29 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 
     private void initFragmentType() {
         mBottomReadLayout.setSelected(false);
@@ -127,7 +164,7 @@ public class MyMainActivity extends AppCompatActivity implements View.OnClickLis
         switch (mFragment_type) {
             case "news":
                 initFragment();
-                mCaTitleText.setText("我");
+                mCaTitleText.setText("新闻");
                 //setTheme();
                 break;
 

@@ -73,6 +73,7 @@ public class VideoFragment extends Fragment {
 
 
 
+
     private void sendMsg() {
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override

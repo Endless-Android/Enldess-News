@@ -116,7 +116,7 @@ public class LoginBmobActivity extends AppCompatActivity {
                 Log.e("aaaa", "onClick: ");
                 startActivity(new Intent(LoginBmobActivity.this, RegisterActivity.class));
                 overridePendingTransition(R.anim.fade, R.anim.hold);
-                finish();
+
                 break;
         }
     }

@@ -3,6 +3,8 @@ package com.endless.enldess_news.adapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -14,7 +16,6 @@ public class ViewPagerAdatper extends PagerAdapter {
     private List<View> mViewList;
     private List<View> mBitmaps;
     private boolean isHead = false;
-   // private final int realPosition = position % getRealCount();
 
     public ViewPagerAdatper(List<View> mViewList) {
         this.mViewList = mViewList;
@@ -30,7 +31,7 @@ public class ViewPagerAdatper extends PagerAdapter {
     @Override
     public int getCount() {
         if (isHead) {
-            return mBitmaps.size();
+            return Integer.MAX_VALUE;
         } else {
             return mViewList.size();
         }
@@ -45,8 +46,18 @@ public class ViewPagerAdatper extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         if (isHead) {
-            container.addView(mBitmaps.get(position % mBitmaps.size()));
-            return mBitmaps.get(position);
+            position %= mBitmaps.size();
+            if (position<0){
+                position = mBitmaps.size()+position;
+            }
+            ImageView view = (ImageView) mBitmaps.get(position);
+            ViewParent vp =view.getParent();
+            if (vp!=null){
+                ViewGroup parent = (ViewGroup)vp;
+                parent.removeView(view);
+            }
+            container.addView(view);
+            return view;
         } else {
             container.addView(mViewList.get(position));
             return mViewList.get(position);
@@ -57,14 +68,13 @@ public class ViewPagerAdatper extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         if (isHead) {
-            container.removeView(mBitmaps.get(position));
+            //container.removeView(mBitmaps.get(position));
         } else {
             container.removeView(mViewList.get(position));
         }
     }
 
-    private int getRealCount(){
-        return  mBitmaps==null ? 0:mBitmaps.size();
-    }
+
+
 
 }

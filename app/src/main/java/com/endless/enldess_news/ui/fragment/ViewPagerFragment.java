@@ -207,6 +207,11 @@ public class ViewPagerFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+
+                position %= mBitmaps.size();
+                if (position<0){
+                    position = mBitmaps.size()+position;
+                }
                 if (position == 0) {
                     mOneDots.setImageResource(R.drawable.light_dot);
                     mTwoDots.setImageResource(R.drawable.gray_dot);
@@ -224,7 +229,6 @@ public class ViewPagerFragment extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
 
             }
         });

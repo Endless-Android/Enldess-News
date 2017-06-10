@@ -68,8 +68,15 @@ public class CollectActivity extends AppCompatActivity {
         initdate();
         initRecycleView();
         initRefresh();
-
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initdate();
+    }
+
+
 
     private void initRefresh() {
         mCollRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -134,6 +141,7 @@ public class CollectActivity extends AppCompatActivity {
     }
 
     private void initdate() {
+        mCollectList.clear();
         BmobQuery<CollectBean> query = new BmobQuery<CollectBean>();
         query.addWhereEqualTo("iscoll", true);
         query.setLimit(50);
